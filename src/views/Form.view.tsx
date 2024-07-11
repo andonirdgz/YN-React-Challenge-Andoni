@@ -148,6 +148,8 @@ export const FormView = () => {
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <CheckboxGroup
+                            id="interests"
+                            label="Interests"
                             options={value as CustomCheckboxProps[]}
                             onChange={onChange}
                             error={Boolean(errors.interests)}
