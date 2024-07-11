@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, CircularProgress, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { useUpdateAnswers } from '../api-hooks/useUpdateAnswers'
@@ -37,40 +37,24 @@ function customCheckboxInterestsToDomainConverter(
 
 export const FormView = () => {
     const answers = useAnswersStore(state => state.getAnswers())
-    const [loading, setLoading] = useState(true)
 
     const {
         control,
         handleSubmit,
-        setValue,
         formState: { errors, isValid },
     } = useForm({
         mode: 'onChange',
         resolver: yupResolver(validationSchema),
+        values: {
+            ...answers,
+            interests: domainToCustomCheckboxInterestsConverter(
+                answers.interests,
+            ),
+        },
     })
 
-    useEffect(() => {
-        if (!loading) return
-
-        if (
-            answers.name ||
-            answers.mail ||
-            answers.age ||
-            answers.interests.length > 0
-        ) {
-            setValue('name', answers.name)
-            setValue('age', answers.age)
-            setValue('mail', answers.mail)
-            setValue(
-                'interests',
-                domainToCustomCheckboxInterestsConverter(answers.interests),
-            )
-            setLoading(false)
-        }
-    }, [answers, setValue])
-
     const updateAnswersMutation = useUpdateAnswers()
-    const disabled = loading || updateAnswersMutation.isLoading
+    const disabled = updateAnswersMutation.isLoading
 
     const onSubmit = handleSubmit(formData => {
         updateAnswersMutation.mutate({
@@ -83,7 +67,13 @@ export const FormView = () => {
         })
     })
 
-    if (loading) return <CircularProgress />
+    const isLodingAnswers =
+        !answers.name &&
+        !answers.mail &&
+        !answers.age &&
+        answers.interests.length <= 0
+
+    if (isLodingAnswers) return <CircularProgress />
 
     return (
         <div id="form-view">
@@ -143,6 +133,8 @@ export const FormView = () => {
                     TASK 2:
                     - Integrate CheckboxGroup into the form, controlled
                     by react-hook-form. ✅
+                    - Ensure the form's initial state is properly
+                    configured to kickstart the form's state cycle. ✅
                     - Do NOT modify types of answers.interests or
                     CheckboxGroup's options. This could be detrimental
                     to your final assessment. ✅
