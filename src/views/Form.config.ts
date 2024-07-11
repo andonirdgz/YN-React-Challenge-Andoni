@@ -1,4 +1,4 @@
-import { object, string, mixed } from 'yup'
+import { object, string, array, boolean } from 'yup'
 
 const IS_REQUIRED_MSG = 'This field is required'
 const IS_NUMBER_MSG = 'This field must be a number'
@@ -13,6 +13,7 @@ const MIN_AGE_MSG = (minAge: number) => `Minimum age is ${minAge}`
 const MAX_AGE_MSG = (maxAge: number) => `Maximum age is ${maxAge}`
 const MIN_AGE = 18
 const MAX_AGE = 99
+const INTERESTS_SELECTED_MSG = 'At least one insterest must be selected.'
 
 // TASK 1:
 // - Implement additional validations for the age field. ✅
@@ -49,8 +50,18 @@ export const validationSchema = object().shape({
             (value: string) => Number(value) <= MAX_AGE,
         ),
     // TASK 3:
-    // - Implement a validation rule for the 'interests' field.
-    // - The validation should ensure that at least one option is selected.
-    // - If no option is selected, display an error message.
-    interests: mixed().notRequired(),
+    // - Implement a validation rule for the 'interests' field. ✅
+    // - The validation should ensure that at least one option is selected. ✅
+    // - If no option is selected, display an error message. ✅
+    interests: array()
+        .of(
+            object().shape({
+                id: string().required(),
+                label: string().optional(),
+                checked: boolean().optional(),
+            }),
+        )
+        .test('atLeastOneIsChecked', INTERESTS_SELECTED_MSG, value =>
+            value ? value.some(interest => interest.checked) : false,
+        ),
 })
