@@ -153,6 +153,7 @@ export const FormView = () => {
                             options={value as CustomCheckboxProps[]}
                             onChange={onChange}
                             error={Boolean(errors.interests)}
+                            helperText={errors.interests?.message}
                         />
                     )}
                 />
