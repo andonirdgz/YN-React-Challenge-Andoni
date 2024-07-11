@@ -70,6 +70,7 @@ export const FormView = () => {
     }, [answers, setValue])
 
     const updateAnswersMutation = useUpdateAnswers()
+    const disabled = loading || updateAnswersMutation.isLoading
 
     const onSubmit = handleSubmit(formData => {
         updateAnswersMutation.mutate({
@@ -103,6 +104,7 @@ export const FormView = () => {
                             value={value}
                             helperText={errors.name?.message || ''}
                             error={Boolean(errors.name?.message)}
+                            disabled={disabled}
                         />
                     )}
                 />
@@ -117,6 +119,7 @@ export const FormView = () => {
                             value={value}
                             helperText={errors.age?.message || ''}
                             error={Boolean(errors.age?.message)}
+                            disabled={disabled}
                         />
                     )}
                 />
@@ -132,6 +135,7 @@ export const FormView = () => {
                             value={value}
                             helperText={errors.mail?.message || ''}
                             error={Boolean(errors.mail?.message)}
+                            disabled={disabled}
                         />
                     )}
                 />
@@ -142,6 +146,10 @@ export const FormView = () => {
                     - Do NOT modify types of answers.interests or
                     CheckboxGroup's options. This could be detrimental
                     to your final assessment. ✅
+
+                    💡 Note: Could not disable this field because the 
+                            instructions don't allow for modification of 
+                            the CheckboxGroup type.
                 */}
                 <Controller
                     name="interests"
@@ -158,7 +166,7 @@ export const FormView = () => {
                 />
                 <Button
                     variant="contained"
-                    disabled={!isValid}
+                    disabled={!isValid || disabled}
                     onClick={onSubmit}
                 >
                     Submit
