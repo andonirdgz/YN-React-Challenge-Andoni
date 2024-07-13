@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 
+import { TableActions } from '../components/TableActions'
 import { DomainAnswers, DomainOption } from '../domain/types'
 import { useAnswersStore } from '../state'
 
@@ -17,7 +18,7 @@ import { useAnswersStore } from '../state'
 // - Display answers from store in table. ✅
 // - Each row of the table body should have the name of the answer
 // and its value. ✅
-// - Add the edit and delete buttons on top of the table.
+// - Add the edit and delete buttons on top of the table. ✅
 
 // TASK 5:
 // - Redirect to Form view on edit button click.
@@ -64,6 +65,7 @@ export const TableView = () => {
 
     return (
         <div id="table-view">
+            <TableActions />
             <TableContainer component={Paper}>
                 <Table aria-label="Question answers table">
                     <TableHead>
