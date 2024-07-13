@@ -32,9 +32,13 @@ const MOCK_ANSWERS = {
 
 const COLUMNS = ['Question', 'Answer']
 
+function normalizeQuestionName(question: string) {
+    return question.replace('_', ' ')
+}
+
 export const TableView = () => {
     const answers = Object.entries(MOCK_ANSWERS).map(([question, answer]) => {
-        const normalizedQuestion = question.replace('_', ' ')
+        const normalizedQuestion = normalizeQuestionName(question)
 
         if (Array.isArray(answer))
             return [normalizedQuestion, answer.join(', ')]
