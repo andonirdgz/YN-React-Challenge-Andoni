@@ -8,6 +8,7 @@ import {
     Paper,
 } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { TableActions } from '../components/TableActions'
 import { DomainAnswers, DomainOption } from '../domain/types'
@@ -21,7 +22,7 @@ import { useAnswersStore } from '../state'
 // - Add the edit and delete buttons on top of the table. ✅
 
 // TASK 5:
-// - Redirect to Form view on edit button click.
+// - Redirect to Form view on edit button click. ✅
 
 // TASK 6:
 // - Invoke useResetAnswers hook on delete button click.
@@ -59,13 +60,18 @@ function toFlattenAnswers(answers: DomainAnswers) {
 }
 
 export const TableView = () => {
+    const navigate = useNavigate()
     const answers = toFlattenAnswers(
         useAnswersStore(state => state.getAnswers()),
     )
 
+    const handleEdit = () => {
+        navigate('/form')
+    }
+
     return (
         <div id="table-view">
-            <TableActions />
+            <TableActions onEditClick={handleEdit} />
             <TableContainer component={Paper}>
                 <Table aria-label="Question answers table">
                     <TableHead>
