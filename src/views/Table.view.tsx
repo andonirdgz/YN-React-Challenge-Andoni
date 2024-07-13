@@ -32,14 +32,17 @@ function normalizeQuestionName(question: string) {
     return question.replace('_', ' ')
 }
 
+function getInterestLabel(interest: DomainOption) {
+    const id = Number(Object.keys(interest)[0])
+    return interest[id].label
+}
+
 function interestsArrayToString(interests: DomainOption[]) {
     const selectedInterests = interests.filter(
         interest => interest[Number(Object.keys(interest)[0])].isChecked,
     )
 
-    return selectedInterests
-        .map(interest => interest[Number(Object.keys(interest)[0])].label)
-        .join(', ')
+    return selectedInterests.map(getInterestLabel).join(', ')
 }
 
 function toFlattenAnswers(answers: DomainAnswers) {
