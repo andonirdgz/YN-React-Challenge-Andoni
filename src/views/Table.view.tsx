@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 
+import { DomainAnswers } from '../domain/types'
 import { useAnswersStore } from '../state'
 
 // TASK 4:
@@ -31,31 +32,34 @@ function normalizeQuestionName(question: string) {
     return question.replace('_', ' ')
 }
 
+function toFlattenAnswers(answers: DomainAnswers) {
+    return Object.entries(answers).map(([question, answer]) => {
+        const normalizedQuestion = normalizeQuestionName(question)
+
+        if (Array.isArray(answer)) {
+            const selectedInterests = answer.filter(
+                interest =>
+                    interest[Number(Object.keys(interest)[0])].isChecked,
+            )
+
+            return [
+                normalizedQuestion,
+                selectedInterests
+                    .map(
+                        interest =>
+                            interest[Number(Object.keys(interest)[0])].label,
+                    )
+                    .join(', '),
+            ]
+        }
+
+        return [normalizedQuestion, answer]
+    })
+}
+
 export const TableView = () => {
-    const answers = useAnswersStore(state =>
-        Object.entries(state.getAnswers()).map(([question, answer]) => {
-            const normalizedQuestion = normalizeQuestionName(question)
-
-            if (Array.isArray(answer)) {
-                const selectedInterests = answer.filter(
-                    interest =>
-                        interest[Number(Object.keys(interest)[0])].isChecked,
-                )
-
-                return [
-                    normalizedQuestion,
-                    selectedInterests
-                        .map(
-                            interest =>
-                                interest[Number(Object.keys(interest)[0])]
-                                    .label,
-                        )
-                        .join(', '),
-                ]
-            }
-
-            return [normalizedQuestion, answer]
-        }),
+    const answers = toFlattenAnswers(
+        useAnswersStore(state => state.getAnswers()),
     )
 
     return (
