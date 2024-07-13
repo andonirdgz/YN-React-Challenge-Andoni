@@ -9,9 +9,11 @@ import {
 } from '@mui/material'
 import React from 'react'
 
+import { useAnswersStore } from '../state'
+
 // TASK 4:
 // - Implement the table from this mockup (public/table_view_mockup.png). ✅
-// - Display answers from store in table.
+// - Display answers from store in table. ✅
 // - Each row of the table body should have the name of the answer
 // and its value. ✅
 // - Add the edit and delete buttons on top of the table.
@@ -23,13 +25,6 @@ import React from 'react'
 // - Invoke useResetAnswers hook on delete button click.
 // - See useResetAnswers hook for more guidelines.
 
-const MOCK_ANSWERS = {
-    name: 'John Doe',
-    mail: 'john@doe.com',
-    age: '25',
-    interests: ['Sports', 'Music'],
-}
-
 const COLUMNS = ['Question', 'Answer']
 
 function normalizeQuestionName(question: string) {
@@ -37,14 +32,31 @@ function normalizeQuestionName(question: string) {
 }
 
 export const TableView = () => {
-    const answers = Object.entries(MOCK_ANSWERS).map(([question, answer]) => {
-        const normalizedQuestion = normalizeQuestionName(question)
+    const answers = useAnswersStore(state =>
+        Object.entries(state.getAnswers()).map(([question, answer]) => {
+            const normalizedQuestion = normalizeQuestionName(question)
 
-        if (Array.isArray(answer))
-            return [normalizedQuestion, answer.join(', ')]
+            if (Array.isArray(answer)) {
+                const selectedInterests = answer.filter(
+                    interest =>
+                        interest[Number(Object.keys(interest)[0])].isChecked,
+                )
 
-        return [normalizedQuestion, answer]
-    })
+                return [
+                    normalizedQuestion,
+                    selectedInterests
+                        .map(
+                            interest =>
+                                interest[Number(Object.keys(interest)[0])]
+                                    .label,
+                        )
+                        .join(', '),
+                ]
+            }
+
+            return [normalizedQuestion, answer]
+        }),
+    )
 
     return (
         <div id="table-view">
