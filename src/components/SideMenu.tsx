@@ -53,6 +53,12 @@ const contentStyles: React.CSSProperties = {
     alignItems: 'center',
 }
 
+const mobileContentStyles: React.CSSProperties = {
+    overflow: 'auto',
+    backgroundColor: '#fff',
+    padding: 2,
+}
+
 type SideMenuProps = {
     routes: AppRoutes
     children?: React.ReactNode
@@ -76,7 +82,9 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children, routes }) => {
                     Table
                 </Link>
             </Box>
-            <Box sx={contentStyles}>{children}</Box>
+            <Box sx={isMobile ? mobileContentStyles : contentStyles}>
+                {children}
+            </Box>
         </Box>
     )
 }
