@@ -10,6 +10,7 @@ import {
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { useResetAnswers } from '../api-hooks/useResetAnswers'
 import { TableActions } from '../components/TableActions'
 import { DomainAnswers, DomainOption } from '../domain/types'
 import { useAnswersStore } from '../state'
@@ -25,7 +26,7 @@ import { useAnswersStore } from '../state'
 // - Redirect to Form view on edit button click. ✅
 
 // TASK 6:
-// - Invoke useResetAnswers hook on delete button click.
+// - Invoke useResetAnswers hook on delete button click. ✅
 // - See useResetAnswers hook for more guidelines.
 
 const COLUMNS = ['Question', 'Answer']
@@ -69,9 +70,19 @@ export const TableView = () => {
         navigate('/form')
     }
 
+    const resetAnswersMutation = useResetAnswers()
+
+    const handleDelete = () => {
+        resetAnswersMutation.mutate()
+    }
+
     return (
         <div id="table-view">
-            <TableActions onEditClick={handleEdit} />
+            <TableActions
+                onEditClick={handleEdit}
+                onDeleteClick={handleDelete}
+                disabled={resetAnswersMutation.isLoading}
+            />
             <TableContainer component={Paper}>
                 <Table aria-label="Question answers table">
                     <TableHead>
