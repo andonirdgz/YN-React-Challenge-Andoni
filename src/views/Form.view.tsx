@@ -58,14 +58,23 @@ export const FormView = () => {
     })
 
     return (
-        <div id="form-view">
+        <div
+            id="form-view"
+            style={{
+                width: '100%',
+            }}
+        >
             <Backdrop open={isLodingAnswers || updateAnswersMutation.isLoading}>
                 <CircularProgress />
             </Backdrop>
             <Box
                 display="flex"
                 gap={4}
-                sx={{ flexDirection: 'column', width: '300px' }}
+                sx={{
+                    flexDirection: 'column',
+                    marginX: 'auto',
+                    width: '90%',
+                }}
             >
                 <Controller
                     name="name"
