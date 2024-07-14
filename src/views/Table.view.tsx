@@ -81,6 +81,7 @@ export const TableView = () => {
             <TableActions
                 onEditClick={handleEdit}
                 onDeleteClick={handleDelete}
+                disabled={resetAnswersMutation.isLoading}
             />
             <TableContainer component={Paper}>
                 <Table aria-label="Question answers table">
