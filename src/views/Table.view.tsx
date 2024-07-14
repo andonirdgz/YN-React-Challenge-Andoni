@@ -6,6 +6,8 @@ import {
     TableCell,
     TableRow,
     Paper,
+    Backdrop,
+    CircularProgress,
 } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -76,15 +78,23 @@ export const TableView = () => {
         resetAnswersMutation.mutate()
     }
 
+    const isLoading = resetAnswersMutation.isLoading
+
     return (
         <div id="table-view">
+            <Backdrop open={isLoading}>
+                <CircularProgress />
+            </Backdrop>
             <TableActions
                 onEditClick={handleEdit}
                 onDeleteClick={handleDelete}
-                disabled={resetAnswersMutation.isLoading}
+                disabled={isLoading}
             />
             <TableContainer component={Paper}>
-                <Table aria-label="Question answers table">
+                <Table
+                    sx={{ minWidth: 350 }}
+                    aria-label="Question answers table"
+                >
                     <TableHead>
                         <TableRow>
                             {COLUMNS.map(column => (

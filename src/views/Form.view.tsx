@@ -1,5 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, CircularProgress, TextField } from '@mui/material'
+import {
+    Backdrop,
+    Box,
+    Button,
+    CircularProgress,
+    TextField,
+} from '@mui/material'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -32,8 +38,13 @@ export const FormView = () => {
         },
     })
 
+    const isLodingAnswers =
+        !answers.name &&
+        !answers.mail &&
+        !answers.age &&
+        answers.interests.length <= 0
     const updateAnswersMutation = useUpdateAnswers()
-    const disabled = updateAnswersMutation.isLoading
+    const disabled = updateAnswersMutation.isLoading || isLodingAnswers
 
     const onSubmit = handleSubmit(formData => {
         updateAnswersMutation.mutate({
@@ -46,20 +57,24 @@ export const FormView = () => {
         })
     })
 
-    const isLodingAnswers =
-        !answers.name &&
-        !answers.mail &&
-        !answers.age &&
-        answers.interests.length <= 0
-
-    if (isLodingAnswers) return <CircularProgress />
-
     return (
-        <div id="form-view">
+        <div
+            id="form-view"
+            style={{
+                width: '100%',
+            }}
+        >
+            <Backdrop open={isLodingAnswers || updateAnswersMutation.isLoading}>
+                <CircularProgress />
+            </Backdrop>
             <Box
                 display="flex"
                 gap={4}
-                sx={{ flexDirection: 'column', width: '300px' }}
+                sx={{
+                    flexDirection: 'column',
+                    marginX: 'auto',
+                    width: '90%',
+                }}
             >
                 <Controller
                     name="name"
