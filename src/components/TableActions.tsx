@@ -5,11 +5,13 @@ import React from 'react'
 type TableActionsProps = {
     onEditClick?: () => void
     onDeleteClick?: () => void
+    disabled?: boolean
 }
 
 export const TableActions: React.FC<TableActionsProps> = ({
     onEditClick,
     onDeleteClick,
+    disabled,
 }) => (
     <Box
         display="flex"
@@ -19,10 +21,14 @@ export const TableActions: React.FC<TableActionsProps> = ({
             justifyContent: 'flex-end',
         }}
     >
-        <IconButton aria-label="edit" onClick={onEditClick}>
+        <IconButton aria-label="edit" onClick={onEditClick} disabled={disabled}>
             <Edit />
         </IconButton>
-        <IconButton aria-label="delete" onClick={onDeleteClick}>
+        <IconButton
+            aria-label="delete"
+            onClick={onDeleteClick}
+            disabled={disabled}
+        >
             <Delete />
         </IconButton>
     </Box>
