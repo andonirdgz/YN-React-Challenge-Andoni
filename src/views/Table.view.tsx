@@ -91,7 +91,10 @@ export const TableView = () => {
                 disabled={isLoading}
             />
             <TableContainer component={Paper}>
-                <Table aria-label="Question answers table">
+                <Table
+                    sx={{ minWidth: 350 }}
+                    aria-label="Question answers table"
+                >
                     <TableHead>
                         <TableRow>
                             {COLUMNS.map(column => (
