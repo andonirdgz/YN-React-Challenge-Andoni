@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, useMediaQuery } from '@mui/material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -7,6 +7,13 @@ import { AppRoutes } from '../domain/routes'
 const layoutStyles: React.CSSProperties = {
     display: 'flex',
     height: '100vh',
+}
+
+const layoutMobileStyles: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    width: '100%',
 }
 
 const linkStyles: React.CSSProperties = {
@@ -29,6 +36,14 @@ const sideMenuStyles: React.CSSProperties = {
     boxSizing: 'border-box',
 }
 
+const sideMenuMobileStyles: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#DD1E3E',
+    padding: 2,
+    boxSizing: 'border-box',
+}
+
 const contentStyles: React.CSSProperties = {
     flex: 1,
     overflow: 'auto',
@@ -45,14 +60,15 @@ type SideMenuProps = {
 
 export const SideMenu: React.FC<SideMenuProps> = ({ children, routes }) => {
     const navigate = useNavigate()
+    const isMobile = useMediaQuery('(max-width:600px)')
 
     React.useEffect(() => {
         navigate(routes.FORM)
     }, [])
 
     return (
-        <Box sx={layoutStyles}>
-            <Box sx={sideMenuStyles}>
+        <Box sx={isMobile ? layoutMobileStyles : layoutStyles}>
+            <Box sx={isMobile ? sideMenuMobileStyles : sideMenuStyles}>
                 <Link to={routes.FORM} style={linkStyles}>
                     Form
                 </Link>
