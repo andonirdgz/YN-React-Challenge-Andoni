@@ -6,34 +6,13 @@ import { Controller, useForm } from 'react-hook-form'
 import { useUpdateAnswers } from '../api-hooks/useUpdateAnswers'
 import { CheckboxGroup } from '../components'
 import { CustomCheckboxProps } from '../components/CheckboxGroup'
-import { DomainOption } from '../domain/types'
 import { useAnswersStore } from '../state'
 
 import { validationSchema } from './Form.config'
-
-function domainToCustomCheckboxInterestsConverter(
-    interests: DomainOption[],
-): CustomCheckboxProps[] {
-    return interests.map(interest => {
-        const id = Number(Object.keys(interest)[0])
-        return {
-            id: id.toString(),
-            label: interest[id].label,
-            checked: interest[id].isChecked,
-        }
-    })
-}
-
-function customCheckboxInterestsToDomainConverter(
-    interests: CustomCheckboxProps[],
-): DomainOption[] {
-    return interests.map(interest => ({
-        [Number(interest.id)]: {
-            label: interest.label ?? '',
-            isChecked: interest.checked ?? false,
-        },
-    }))
-}
+import {
+    domainToCustomCheckboxInterestsConverter,
+    customCheckboxInterestsToDomainConverter,
+} from './Form.converters'
 
 export const FormView = () => {
     const answers = useAnswersStore(state => state.getAnswers())
